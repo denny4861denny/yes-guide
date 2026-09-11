@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>YES그룹 사업자 가이드</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+:root{
+  --navy:#1e3a5f;--navy-l:#e8f2ff;--navy-m:#c8dcf8;
+  --yellow:#fcd34d;--text:#111;--text2:#444;--text3:#888;
+  --bg:#f5f7fa;--card:#fff;--border:#e2e6ea;
+  --red:#991b1b;--red-l:#fef2f2;--amber-l:#fffbeb;--amber:#78350f;
+  --green-l:#f0fdf4;--green:#14532d;
+}
+html,body{height:100%;overflow:hidden;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);max-width:430px;margin:0 auto;display:flex;flex-direction:column;}
+
+/* 스크롤 영역 */
+.app-body{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;padding-bottom:70px;}
+
+/* 탭바 */
+.tabbar{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:#fff;border-top:1px solid var(--border);display:flex;z-index:100;padding-bottom:env(safe-area-inset-bottom);}
+.tab-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 0 8px;border:none;background:none;cursor:pointer;color:var(--text3);font-size:11px;font-weight:600;border-right:1px solid var(--border);}
+.tab-btn:last-child{border-right:none;}
+.tab-btn.active{color:var(--navy);}
+.tab-btn i{font-size:24px;}
+
+/* 화면 */
+.screen{display:none;}.screen.active{display:block;}
+
+/* 페이지 헤더 */
+.page-hdr{background:var(--navy);padding:20px 16px 18px;color:#fff;}
+.page-hdr h1{font-size:19px;font-weight:700;margin-bottom:2px;}
+.page-hdr p{font-size:12px;color:rgba(255,255,255,.55);}
+
+/* 공지 */
+.notice{background:rgba(255,255,255,.1);border-radius:10px;padding:14px;margin:16px 14px 0;}
+.notice-tag{font-size:12px;font-weight:700;color:var(--yellow);margin-bottom:6px;display:flex;align-items:center;gap:5px;}
+.notice-title{font-size:14px;font-weight:700;color:#fff;margin-bottom:3px;}
+.notice-desc{font-size:12px;color:var(--yellow);}
+
+/* 메뉴 그리드 */
+.menu-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;padding:14px 14px 0;}
+.menu-item{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px 12px;cursor:pointer;transition:background .1s;-webkit-tap-highlight-color:rgba(30,58,95,.08);}
+.menu-item:active{background:var(--navy-l);}
+.menu-item i{font-size:24px;color:var(--navy);}
+.menu-name{font-size:15px;font-weight:700;color:var(--text);margin:8px 0 6px;}
+.menu-tag{font-size:11px;font-weight:700;background:var(--navy);color:var(--yellow);padding:3px 8px;border-radius:4px;display:inline-block;}
+
+/* 바로가기 3개 */
+.shortcut-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;padding:12px 14px 14px;}
+.sc-item{background:var(--navy);border-radius:10px;padding:14px 10px;display:flex;flex-direction:column;align-items:center;gap:7px;cursor:pointer;position:relative;-webkit-tap-highlight-color:rgba(255,255,255,.08);}
+.sc-item:active{opacity:.85;}
+.sc-item i{font-size:24px;color:#fff;}
+.sc-item.yellow i{color:var(--yellow);}
+.sc-label{font-size:12px;font-weight:700;color:#fff;text-align:center;line-height:1.4;}
+.sc-item.yellow .sc-label{color:var(--yellow);}
+.sc-edit{position:absolute;top:6px;right:6px;width:20px;height:20px;background:rgba(255,255,255,.15);border-radius:4px;display:flex;align-items:center;justify-content:center;}
+.sc-edit i{font-size:12px;color:var(--yellow);}
+
+/* 카드 리스트 */
+.card-list{background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:12px;}
+.list-item{padding:13px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;cursor:pointer;-webkit-tap-highlight-color:rgba(30,58,95,.06);}
+.list-item:last-child{border-bottom:none;}
+.list-item:active{background:#f8fafc;}
+.list-icon{width:36px;height:36px;background:var(--navy-l);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.list-icon i{font-size:19px;color:var(--navy);}
+.list-icon.pink{background:#fce7f3;}.list-icon.pink i{color:#9d174d;}
+.list-title{font-size:13px;font-weight:700;color:var(--text);}
+.list-sub{font-size:11px;color:var(--text3);margin-top:1px;}
+.list-arr{margin-left:auto;font-size:18px;color:#ccc;}
+
+/* 섹션 */
+.section{padding:14px 14px 0;}
+.section-label{font-size:12px;font-weight:600;color:var(--text3);margin-bottom:8px;}
+
+/* 요금제 탭 */
+.tab-group{display:flex;background:var(--border);border-radius:8px;padding:2px;margin:14px 14px 0;}
+.tab-pill{flex:1;text-align:center;padding:8px;font-size:13px;font-weight:600;color:var(--text3);border-radius:6px;cursor:pointer;}
+.tab-pill.active{background:#fff;color:var(--navy);}
+.sub-tabs{display:flex;gap:6px;padding:10px 14px 0;}
+.sub-tab{padding:6px 16px;font-size:13px;font-weight:600;border-radius:20px;cursor:pointer;border:1px solid var(--border);background:var(--card);color:var(--text3);}
+.sub-tab.active{background:var(--navy);color:#fff;border-color:var(--navy);}
+.rate-wrap{padding:12px 14px 0;overflow-x:auto;}
+.rate-tbl{width:100%;border-collapse:collapse;font-size:12px;min-width:360px;}
+.rate-tbl th{background:var(--navy-m);color:var(--navy);font-weight:700;padding:8px 9px;text-align:left;border:1px solid var(--border);}
+.rate-tbl td{padding:8px 9px;border:1px solid var(--border);color:var(--text);line-height:1.4;}
+.rate-tbl tr:nth-child(even) td{background:#fafbfc;}
+.badge-best{background:#fef3c7;color:#92400e;font-size:10px;font-weight:700;padding:1px 5px;border-radius:3px;margin-right:3px;}
+
+/* 체크리스트 */
+.check-group{padding:14px 14px 0;}
+.check-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;}
+.check-hdr-l{display:flex;align-items:center;gap:8px;}
+.check-icon{width:28px;height:28px;background:var(--navy-l);border-radius:6px;display:flex;align-items:center;justify-content:center;}
+.check-icon i{font-size:15px;color:var(--navy);}
+.check-name{font-size:13px;font-weight:700;color:var(--text);}
+.check-prog{font-size:11px;color:var(--text3);}
+.prog-bar{height:4px;background:var(--border);border-radius:2px;margin-bottom:8px;overflow:hidden;}
+.prog-fill{height:100%;background:var(--navy);border-radius:2px;transition:width .3s;}
+.reset-btn{font-size:11px;color:var(--text3);background:none;border:none;cursor:pointer;text-decoration:underline;}
+.check-list{background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden;}
+.check-item{padding:11px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;cursor:pointer;}
+.check-item:last-child{border-bottom:none;}
+.check-box{width:20px;height:20px;border:1.5px solid var(--border);border-radius:5px;flex-shrink:0;display:flex;align-items:center;justify-content:center;}
+.check-item.done .check-box{background:var(--navy);border-color:var(--navy);}
+.check-item.done .check-box::after{content:'✓';font-size:12px;color:#fff;font-weight:700;}
+.check-label{font-size:12px;color:var(--text);line-height:1.4;}
+.check-item.done .check-label{color:var(--text3);text-decoration:line-through;}
+
+/* 스크립트 */
+.script-card{background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin:0 14px 10px;}
+.script-hdr{padding:13px 14px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;}
+.script-title{font-size:14px;font-weight:700;color:var(--text);}
+.script-chev{font-size:18px;color:var(--text3);transition:transform .2s;}
+.script-chev.open{transform:rotate(180deg);}
+.script-body{display:none;padding:0 14px 14px;border-top:1px solid var(--border);}
+.script-body.open{display:block;}
+.script-line{font-size:12px;color:var(--text2);line-height:1.8;padding:2px 0;}
+.copy-btn{margin-top:10px;width:100%;padding:10px;background:var(--navy-l);color:var(--navy);border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;}
+.copy-btn.done{background:var(--green-l);color:var(--green);}
+
+/* 가이드북 */
+.guide-list{padding:14px 14px 0;}
+.guide-ch-item{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-bottom:8px;display:flex;align-items:center;gap:12px;cursor:pointer;}
+.guide-ch-item:active{background:var(--navy-l);}
+.ch-num{width:32px;height:32px;background:var(--navy);color:#fff;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;}
+.ch-title{font-size:13px;font-weight:700;color:var(--text);}
+.ch-sub{font-size:11px;color:var(--text3);margin-top:1px;}
+.ch-arr{margin-left:auto;font-size:20px;color:#ccc;}
+.guide-detail{display:none;}.guide-detail.on{display:block;}
+.guide-back{display:flex;align-items:center;gap:6px;padding:14px;cursor:pointer;font-size:13px;color:var(--navy);font-weight:700;}
+.guide-back i{font-size:18px;}
+.guide-sec{padding:0 14px 14px;}
+.g-h{font-size:13px;font-weight:700;color:var(--text);border-bottom:2px solid var(--navy);padding-bottom:6px;margin:14px 0 8px;}
+.g-tbl{width:100%;border-collapse:collapse;font-size:12px;margin-bottom:10px;}
+.g-tbl th{background:var(--navy-m);color:var(--navy);font-weight:700;padding:7px 8px;text-align:left;border:1px solid var(--border);}
+.g-tbl td{padding:7px 8px;border:1px solid var(--border);color:var(--text);vertical-align:top;line-height:1.5;}
+.g-tbl tr:nth-child(even) td{background:#fafbfc;}
+.g-tip{background:var(--navy-l);border-left:3px solid var(--navy);padding:9px 11px;margin-bottom:9px;font-size:12px;color:var(--navy);line-height:1.6;}
+.g-warn{background:var(--red-l);border-left:3px solid var(--red);padding:9px 11px;margin-bottom:9px;font-size:12px;color:var(--red);line-height:1.6;}
+.g-amb{background:var(--amber-l);border-left:3px solid #d97706;padding:9px 11px;margin-bottom:9px;font-size:12px;color:var(--amber);line-height:1.6;}
+.g-scr{background:#f8fafc;border:1px solid var(--border);border-radius:8px;padding:11px;margin-bottom:9px;}
+.g-scr-l{font-size:12px;color:var(--text2);line-height:1.8;}
+
+/* 유심 */
+.usim-card{background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin:0 14px 10px;}
+.usim-hdr{padding:12px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;}
+.usim-badge{font-size:11px;font-weight:700;padding:2px 8px;border-radius:4px;}
+.usim-badge.kt{background:var(--navy-l);color:var(--navy);}
+.usim-badge.lg{background:#fce7f3;color:#9d174d;}
+.usim-row{display:flex;justify-content:space-between;align-items:flex-start;padding:8px 14px;border-bottom:1px solid var(--border);font-size:12px;}
+.usim-row:last-child{border-bottom:none;}
+.usim-key{color:var(--text3);flex-shrink:0;margin-right:8px;}
+.usim-val{color:var(--text);text-align:right;line-height:1.5;}
+.usim-warn{color:var(--red);font-weight:700;}
+
+/* 모달 */
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:200;display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity .2s;}
+.modal-bg.show{opacity:1;pointer-events:all;}
+.modal-box{background:#fff;border-radius:16px 16px 0 0;padding:20px 16px 36px;width:100%;max-width:430px;transform:translateY(30px);transition:transform .2s;}
+.modal-bg.show .modal-box{transform:translateY(0);}
+.modal-title{font-size:15px;font-weight:700;margin-bottom:6px;}
+.modal-desc{font-size:12px;color:var(--text3);margin-bottom:14px;line-height:1.6;}
+.url-row{display:flex;align-items:center;border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:6px;}
+.url-prefix{padding:0 10px;font-size:12px;color:var(--text3);border-right:1px solid var(--border);height:40px;display:flex;align-items:center;background:#fafbfc;white-space:nowrap;}
+.url-input{flex:1;border:none;padding:0 10px;font-size:13px;height:40px;outline:none;color:var(--text);}
+.err-msg{font-size:12px;color:var(--red);margin-bottom:8px;display:none;}
+.modal-btns{display:flex;gap:8px;margin-top:6px;}
+.m-cancel{flex:1;height:40px;border:1px solid var(--border);border-radius:8px;background:#fff;font-size:13px;color:var(--text2);cursor:pointer;}
+.m-confirm{flex:2;height:40px;background:var(--navy);border:none;border-radius:8px;font-size:13px;font-weight:700;color:#fff;cursor:pointer;}
+</style>
+</head>
+<body>
+
+<div class="app-body">
+
+<!-- ══ 홈 ══ -->
+<div id="s-home" class="screen active">
+  <div style="background:var(--navy);padding:20px 16px 0;">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
+      <div style="width:34px;height:34px;background:rgba(255,255,255,.12);border-radius:8px;display:flex;align-items:center;justify-content:center;">
+        ⭐
+      </div>
+      <div>
+        <div style="font-size:16px;font-weight:700;color:#fff;">YES그룹</div>
+        <div style="font-size:11px;color:rgba(255,255,255,.5);">사업자 가이드 앱</div>
+      </div>
+    </div>
+    <div class="notice">
+      <div class="notice-tag">📢 이번 주 공지</div>
+      <div class="notice-title">5G 선불464 요금제 출시</div>
+      <div class="notice-desc">LG망 46,400원 / 20GB · 국내 최초 5G 선불요금제</div>
+    </div>
+    <div style="height:16px;"></div>
+  </div>
+  <div class="menu-grid">
+    <div class="menu-item" onclick="goScreen('s-guide')">
+      <div style="font-size:28px;margin-bottom:6px;">📖</div>
+      <div class="menu-name">가이드북</div>
+      <div class="menu-tag">1~8장 전체보기</div>
+    </div>
+    <div class="menu-item" onclick="goScreen('s-check')">
+      <div style="font-size:28px;margin-bottom:6px;">✅</div>
+      <div class="menu-name">체크리스트</div>
+      <div class="menu-tag">단계별 확인</div>
+    </div>
+    <div class="menu-item" onclick="goScreen('s-rate')">
+      <div style="font-size:28px;margin-bottom:6px;">📋</div>
+      <div class="menu-name">요금제</div>
+      <div class="menu-tag">선불·후불 확인</div>
+    </div>
+    <div class="menu-item" onclick="goScreen('s-script')">
+      <div style="font-size:28px;margin-bottom:6px;">💬</div>
+      <div class="menu-name">상담 스크립트</div>
+      <div class="menu-tag">대본 바로 복사</div>
+    </div>
+  </div>
+  <div class="shortcut-grid">
+    <div class="sc-item" id="sc-platform" onclick="platformClick()">
+      <div style="font-size:24px;">🌐</div>
+      <div class="sc-label" id="sc-label">본인<br>플랫폼</div>
+      <div class="sc-edit" onclick="event.stopPropagation();showModal()">
+        ✏️
+      </div>
+    </div>
+    <div class="sc-item" onclick="window.open('https://npfa.n-telecom.co.kr','_blank')">
+      <div style="font-size:24px;">⚙️</div>
+      <div class="sc-label">플랫폼<br>관리사이트</div>
+    </div>
+    <div class="sc-item yellow" onclick="goScreen('s-usim')">
+      <div style="font-size:24px;">📶</div>
+      <div class="sc-label">유심<br>구매처</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 요금제 ══ -->
+<div id="s-rate" class="screen">
+  <div class="page-hdr"><h1>요금제 표</h1><p>KT·LG망 선불·후불 전체</p></div>
+  <div class="tab-group">
+    <div class="tab-pill active" id="rp-pre" onclick="rateTab('pre')">선불</div>
+    <div class="tab-pill" id="rp-post" onclick="rateTab('post')">후불</div>
+  </div>
+  <div class="sub-tabs">
+    <div class="sub-tab active" id="rs-kt" onclick="rateSub('kt')">KT망</div>
+    <div class="sub-tab" id="rs-lg" onclick="rateSub('lg')">LG망</div>
+  </div>
+  <div class="rate-wrap"><div id="rate-content"></div></div>
+</div>
+
+<!-- ══ 체크리스트 ══ -->
+<div id="s-check" class="screen">
+  <div class="page-hdr"><h1>개통 체크리스트</h1><p>단계별로 확인하세요</p></div>
+  <div class="check-group" id="cg-setup"></div>
+  <div class="check-group" id="cg-kt" style="margin-top:14px;"></div>
+  <div class="check-group" id="cg-lg" style="margin-top:14px;padding-bottom:4px;"></div>
+</div>
+
+<!-- ══ 스크립트 ══ -->
+<div id="s-script" class="screen">
+  <div class="page-hdr"><h1>상담 스크립트</h1><p>항목을 눌러 펼치고 복사하세요</p></div>
+  <div style="height:14px;"></div>
+  <div id="script-list"></div>
+</div>
+
+<!-- ══ 가이드북 ══ -->
+<div id="s-guide" class="screen">
+  <div class="page-hdr" id="guide-hdr"><h1>실전 가이드북</h1><p>YES그룹 앤텔레콤 사업 1~8장</p></div>
+  <div class="guide-list" id="guide-home">
+    <div class="guide-ch-item" onclick="openCh(1)"><div class="ch-num">1</div><div><div class="ch-title">앤텔레콤 사업 이해</div><div class="ch-sub">사업 구조 · NV 개념</div></div>›</div>
+    <div class="guide-ch-item" onclick="openCh(2)"><div class="ch-num">2</div><div><div class="ch-title">보상플랜</div><div class="ch-sub">직급 · 매출장려금 · 승급축하금</div></div>›</div>
+    <div class="guide-ch-item" onclick="openCh(3)"><div class="ch-num">3</div><div><div class="ch-title">초기사업 셋팅</div><div class="ch-sub">앤스마트 · 플랫폼 · 채널톡</div></div>›</div>
+    <div class="guide-ch-item" onclick="openCh(4)"><div class="ch-num">4</div><div><div class="ch-title">후불 마케팅</div><div class="ch-sub">요금제 · 상담 스크립트</div></div>›</div>
+    <div class="guide-ch-item" onclick="openCh(5)"><div class="ch-num">5</div><div><div class="ch-title">선불 마케팅</div><div class="ch-sub">요금제 · 유심 · eSIM</div></div>›</div>
+    <div class="guide-ch-item" onclick="openCh(6)"><div class="ch-num">6</div><div><div class="ch-title">온라인 마케팅</div><div class="ch-sub">블로그 · 카카오채널</div></div>›</div>
+    <div class="guide-ch-item" onclick="openCh(7)"><div class="ch-num">7</div><div><div class="ch-title">개통 진행 순서</div><div class="ch-sub">K망 · LG망 eSIM</div></div>›</div>
+    <div class="guide-ch-item" onclick="openCh(8)"><div class="ch-num">8</div><div><div class="ch-title">부록</div><div class="ch-sub">링크 · 고객센터 · Q&A</div></div>›</div>
+  </div>
+  <div id="guide-detail-wrap"></div>
+</div>
+
+<!-- ══ 유심 ══ -->
+<div id="s-usim" class="screen">
+  <div class="page-hdr"><h1>유심 구매처</h1><p>KT망·LG망 유심 구매 안내</p></div>
+  <div style="height:14px;"></div>
+  <div class="usim-card">
+    <div class="usim-hdr"><span class="usim-badge kt">KT망</span><span style="font-size:13px;font-weight:700;">KT 바로유심 (민트색 고양이)</span></div>
+    <div class="usim-row"><span class="usim-key">구매처</span><span class="usim-val">CU · GS25 · 이마트24 · 세븐일레븐</span></div>
+    <div class="usim-row"><span class="usim-key">가격</span><span class="usim-val">8,800원 (센터 방문: 1만원)</span></div>
+    <div class="usim-row"><span class="usim-key">유심번호 입력</span><span class="usim-val">숫자 19자리 (F 제외)</span></div>
+    <div class="usim-row"><span class="usim-key">주의</span><span class="usim-val usim-warn">반드시 바로유심으로 구매<br>(타 유심 개통 불가)</span></div>
+  </div>
+  <div class="usim-card">
+    <div class="usim-hdr"><span class="usim-badge lg">LG망</span><span style="font-size:13px;font-weight:700;">모두의유심 원칩</span></div>
+    <div class="usim-row"><span class="usim-key">구매처</span><span class="usim-val">이마트24 · 스토리웨이 · 배민 B마트</span></div>
+    <div class="usim-row"><span class="usim-key">가격</span><span class="usim-val">8,800원 (센터 방문: 1만원)</span></div>
+    <div class="usim-row"><span class="usim-key">유심번호 입력</span><span class="usim-val">모델명 + 유심번호 8자리</span></div>
+    <div class="usim-row"><span class="usim-key">eSIM</span><span class="usim-val">플랫폼 홈페이지에서만 개통</span></div>
+    <div class="usim-row"><span class="usim-key">미납폰 주의</span><span class="usim-val usim-warn">KT 발신정지 시 반드시 LG망 선택</span></div>
+  </div>
+</div>
+
+<!-- ══ 더보기 ══ -->
+<div id="s-more" class="screen">
+  <div class="page-hdr"><h1>더보기</h1><p>기능 · 링크 · 유심</p></div>
+  <div class="section">
+    <div class="section-label">주요 기능</div>
+    <div class="card-list">
+      <div class="list-item" onclick="goScreen('s-guide')">
+        <div class="list-icon" style="font-size:20px;">📖</div>
+        <div><div class="list-title">실전 가이드북</div><div class="list-sub">1~8장 전체 내용</div></div>
+        ›
+      </div>
+      <div class="list-item" onclick="goScreen('s-script')">
+        <div class="list-icon" style="font-size:20px;">💬</div>
+        <div><div class="list-title">상담 스크립트</div><div class="list-sub">대본 바로 복사</div></div>
+        ›
+      </div>
+      <div class="list-item" onclick="goScreen('s-check')">
+        <div class="list-icon" style="font-size:20px;">✅</div>
+        <div><div class="list-title">체크리스트</div><div class="list-sub">개통 단계별 확인</div></div>
+        ›
+      </div>
+      <div class="list-item" onclick="goScreen('s-rate')">
+        <div class="list-icon" style="font-size:20px;">📋</div>
+        <div><div class="list-title">요금제 표</div><div class="list-sub">선불·후불 전체 확인</div></div>
+        ›
+      </div>
+      <div class="list-item" onclick="goScreen('s-usim')">
+        <div class="list-icon" style="font-size:20px;">📶</div>
+        <div><div class="list-title">유심 구매처</div><div class="list-sub">KT망·LG망 안내</div></div>
+        ›
+      </div>
+    </div>
+    <div class="section-label" style="margin-top:4px;">링크 모음</div>
+    <div class="card-list">
+      <div class="list-item" onclick="window.open('https://www.nrcom.com','_blank')">
+        <div class="list-icon" style="font-size:20px;">🏢</div>
+        <div><div class="list-title">앤알커뮤니케이션</div><div class="list-sub">www.nrcom.com</div></div>
+        ↗
+      </div>
+      <div class="list-item" onclick="window.open('https://www.imall7.com','_blank')">
+        <div class="list-icon" style="font-size:20px;">🛍️</div>
+        <div><div class="list-title">아이몰7</div><div class="list-sub">www.imall7.com</div></div>
+        ↗
+      </div>
+      <div class="list-item" onclick="window.open('https://info.n-telecom.co.kr','_blank')">
+        <div class="list-icon" style="font-size:20px;">🌐</div>
+        <div><div class="list-title">앤텔레콤</div><div class="list-sub">info.n-telecom.co.kr</div></div>
+        ↗
+      </div>
+      <div class="list-item" onclick="window.open('https://npfa.n-telecom.co.kr','_blank')">
+        <div class="list-icon" style="font-size:20px;">⚙️</div>
+        <div><div class="list-title">플랫폼 관리사이트</div><div class="list-sub">npfa.n-telecom.co.kr</div></div>
+        ↗
+      </div>
+      <div class="list-item" onclick="window.open('https://www.gabia.com','_blank')">
+        <div class="list-icon" style="font-size:20px;">🌐</div>
+        <div><div class="list-title">가비아 (도메인)</div><div class="list-sub">www.gabia.com</div></div>
+        ↗
+      </div>
+    </div>
+    <div style="height:8px;"></div>
+  </div>
+</div>
+
+</div><!-- /app-body -->
+
+<!-- 하단 탭바 -->
+<nav class="tabbar">
+  <button class="tab-btn active" id="tb-home" onclick="goTab('home')">
+    <span style="font-size:22px;">🏠</span>홈
+  </button>
+  <button class="tab-btn" id="tb-more" onclick="goTab('more')">
+    <span style="font-size:22px;">•••</span>더보기
+  </button>
+</nav>
+
+<!-- 플랫폼 모달 -->
+<div class="modal-bg" id="modal">
+  <div class="modal-box">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+      <div class="modal-title" id="m-title">본인 플랫폼 연결</div>
+      <i class="ti ti-x" style="font-size:20px;color:var(--text3);cursor:pointer;" onclick="hideModal()"></i>
+    </div>
+    <div class="modal-desc" id="m-desc">플랫폼 아이디를 입력하면 다음부터 버튼 한 번으로 바로 이동해요.</div>
+    <div class="url-row">
+      <div class="url-prefix">n-telecom.co.kr/</div>
+      <input class="url-input" id="m-input" type="text" placeholder="아이디 입력" oninput="clearErr()">
+    </div>
+    <div class="err-msg" id="m-err">아이디를 입력해주세요.</div>
+    <div class="modal-btns">
+      <button class="m-cancel" onclick="hideModal()">취소</button>
+      <button class="m-confirm" onclick="savePlatform()">저장하고 이동</button>
+    </div>
+  </div>
+</div>
+
+<script>
+var PKEY='yes_pid';
+function gs(k){try{return localStorage.getItem(k)||'';}catch(e){return '';}}
+function ss(k,v){try{localStorage.setItem(k,v);}catch(e){}}
+
+// 탭/화면 이동
+var currentTab='home';
+function goTab(t){
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tb-'+t).classList.add('active');
+  goScreen('s-'+t);
+  currentTab=t;
+}
+function goScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelector('.app-body').scrollTop=0;
+}
+
+// 플랫폼
+function initPlatform(){
+  var s=gs(PKEY);
+  if(s) document.getElementById('sc-label').innerHTML=s+'<br>플랫폼';
+}
+function platformClick(){
+  var s=gs(PKEY);
+  if(s) window.open('https://www.n-telecom.co.kr/'+s,'_blank');
+  else showModal();
+}
+function showModal(){
+  var s=gs(PKEY);
+  document.getElementById('m-input').value=s||'';
+  document.getElementById('m-title').textContent=s?'플랫폼 아이디 수정':'본인 플랫폼 연결';
+  document.getElementById('m-desc').textContent=s?'저장된 아이디를 수정할 수 있어요.':'플랫폼 아이디를 입력하면 다음부터 버튼 한 번으로 바로 이동해요.';
+  document.getElementById('m-err').style.display='none';
+  document.getElementById('modal').classList.add('show');
+  setTimeout(()=>document.getElementById('m-input').focus(),100);
+}
+function hideModal(){document.getElementById('modal').classList.remove('show');}
+function clearErr(){document.getElementById('m-err').style.display='none';}
+function savePlatform(){
+  var v=document.getElementById('m-input').value.trim();
+  if(!v){document.getElementById('m-err').style.display='block';return;}
+  ss(PKEY,v);
+  document.getElementById('sc-label').innerHTML=v+'<br>플랫폼';
+  hideModal();
+  window.open('https://www.n-telecom.co.kr/'+v,'_blank');
+}
+
+// 요금제
+var rMode='pre',rSub='kt';
+var rData={
+  pre:{
+    kt:[['LTE기본1','12,100원','50분','300MB','없음','없음'],['300MB라이트','33,000원','무제한','300MB','1Mbps','30분'],['LTE396','39,600원','무제한','10.3GB','3Mbps','30분','best'],['LTE459','45,900원','무제한','20.3GB','3Mbps','30분'],['LTE770','77,000원','무제한','최대71GB','3Mbps','200분'],['LTE비디오','85,900원','무제한','100GB','5Mbps','300분']],
+    lg:[['LTE기본1','12,100원','50분','300MB','없음','없음'],['L망2.5GB','17,000원','100분','2.5GB','없음','없음'],['L망300분','20,800원','300분','300MB','400K','없음'],['300MB라이트','33,000원','무제한','300MB','1Mbps','50분'],['LTE396','39,600원','무제한','10.3GB','3Mbps','50분','best'],['5G선불464','46,400원','무제한','20GB','3Mbps','50분','new'],['LTE770','77,000원','무제한','최대71GB','3Mbps','300분'],['매일5GB','85,900원','무제한','매일5GB','5Mbps','300분']]
+  },
+  post:{
+    kt:[['7GB★','19,500~21,100원','무제한+300분','7GB','1Mbps','밀리·CU 등'],['10GB★','22,300~23,800원','무제한+300분','10GB','1Mbps','밀리·CU 등','best'],['11GB+일2GB','37,500~39,900원','무제한+300분','11GB+일2GB','3Mbps','밀리·CU 등'],['100GB','43,200~45,500원','무제한+300분','100GB','5Mbps','밀리·CU 등']],
+    lg:[['L망후불7GB+','17,900원','무제한','7GB','1Mbps','—'],['L망100분15GB+','28,500원','100분','15GB','3Mbps','—'],['L망300분15GB+','30,600원','300분','15GB','3Mbps','—'],['L망11GB+일2GB','36,700원','무제한','11GB+일2GB','3Mbps','—'],['L망매일5GB+','43,200원','무제한','매일5GB','5Mbps','—']]
+  }
+};
+function rateTab(m){
+  rMode=m;['pre','post'].forEach(t=>document.getElementById('rp-'+t).classList.toggle('active',t===m));
+  renderRate();
+}
+function rateSub(s){
+  rSub=s;['kt','lg'].forEach(t=>document.getElementById('rs-'+t).classList.toggle('active',t===s));
+  renderRate();
+}
+function renderRate(){
+  var rows=rData[rMode][rSub];
+  var heads=rMode==='pre'?['요금제','월 요금','통화','데이터','소진후','부가통화']:['요금제','월 요금','통화','데이터','소진후','부가혜택'];
+  var h='<table class="rate-tbl"><thead><tr>'+heads.map(h=>'<th>'+h+'</th>').join('')+'</tr></thead><tbody>';
+  rows.forEach(r=>{
+    var badge=r[6]==='best'?'<span class="badge-best">추천</span>':r[6]==='new'?'<span class="badge-best" style="background:#dcfce7;color:#14532d;">NEW</span>':'';
+    h+='<tr><td>'+badge+r[0]+'</td>'+r.slice(1,6).map(c=>'<td>'+c+'</td>').join('')+'</tr>';
+  });
+  h+='</tbody></table>';
+  document.getElementById('rate-content').innerHTML=h;
+}
+renderRate();
+
+// 체크리스트
+var ckData={
+  setup:{name:'초기 셋팅',items:['N스마트 앱 설치 (태블릿 — K망/L망)','NRCBIZ 앱 설치 (스마트폰)','멤버십 앱 설치 확인 (소비자 안내용)','플랫폼 관리사이트 → 연락처·카카오채널 변경','가비아 도메인 구매 → 포워딩 설정 (유동)','포워딩 도메인으로 플랫폼 접속 테스트','채널톡 가입 → 코드 복사 → 관리사이트 붙여넣기','채널톡 앱 설치 (상담 알림 수신)','카카오채널 개설 → 공개·채팅 ON → 플랫폼 연동','네이버 톡톡파트너 가입','해피콜 스크립트 숙지 / 개통 동의서 준비']},
+  kt:{name:'K망 플랫폼 개통',items:['플랫폼 홈페이지 접속','개통하기 선택','본인인증 (간편인증 앱)','희망번호 선택','유심 번호 입력','요금제 선택','정보 입력 (명의자·주소)','개통 신청 완료','해피콜 수신 (1899-7700)']},
+  lg:{name:'LG망 eSIM 개통',items:['플랫폼 접속 → LG 개통하기 선택','안면인증 QR 스캔','본인인증','가입유형 선택 (신규/번호이동)','eSIM 유형 선택 (iOS/Android)','eSIM 바코드 업로드 / EID·IMEI 입력','요금제 선택','사전체크 1 (실명인증 정보)','사전체크 2 (희망번호 선택)','eSIM 결제','개통 완료 확인','WIFI 연결 후 eSIM 활성화']}
+};
+var ckState={};
+try{var sv=localStorage.getItem('yes_ck');if(sv)ckState=JSON.parse(sv);}catch(e){}
+function saveChk(){try{localStorage.setItem('yes_ck',JSON.stringify(ckState));}catch(e){}}
+function renderChk(key){
+  var d=ckData[key],st=ckState[key]||{};
+  var done=Object.values(st).filter(Boolean).length,total=d.items.length;
+  var pct=Math.round(done/total*100);
+  var h=`<div class="check-hdr"><div class="check-hdr-l"><div class="check-icon">✅</div><div><div class="check-name">${d.name}</div><div class="check-prog">${done} / ${total} 완료</div></div></div><button class="reset-btn" onclick="resetChk('${key}')">초기화</button></div>`;
+  h+=`<div class="prog-bar"><div class="prog-fill" style="width:${pct}%"></div></div>`;
+  h+='<div class="check-list">';
+  d.items.forEach((item,i)=>{
+    var on=st[i]?' done':'';
+    h+=`<div class="check-item${on}" onclick="toggleChk('${key}',${i})"><div class="check-box"></div><div class="check-label">${item}</div></div>`;
+  });
+  h+='</div>';
+  document.getElementById('cg-'+key).innerHTML=h;
+}
+function toggleChk(key,i){
+  if(!ckState[key])ckState[key]={};
+  ckState[key][i]=!ckState[key][i];
+  saveChk();renderChk(key);
+}
+function resetChk(key){ckState[key]={};saveChk();renderChk(key);}
+['setup','kt','lg'].forEach(k=>renderChk(k));
+
+// 스크립트
+var scripts=[
+  {title:'개통 전 해피콜 (녹취 권장)',lines:['"안녕하세요. 앤텔레콤입니다. OOO 고객님 맞으신가요?"','"본인확인 및 가입의사 확인 차 연락 드렸습니다."','① 명의자 성함 및 생년월일 확인.','② 접수하신 요금제 확인.','③ 유심 번호 확인.','"본인이 실제 사용하시는 것이 맞으신가요?"','"유심 양도·재판매 시 발생하는 모든 법적 책임은 본인이 집니다."','"개통 동의서를 보내드릴게요. 자필 작성 후 신분증·유심 사진으로 보내주세요."','보내주신 동의서 확인 후 개통 진행하고 연락드리겠습니다.']},
+  {title:'개통 후 해피콜',lines:['"안녕하세요. 앤텔레콤입니다."','"개통 완료 되었구요, 번호는 010-xxxx-xxxx입니다."','"부산은행 xxxx-xxx 여기로 기본료 0000원 보내주시면 충전 진행할게요."','"다음번 충전 시 멤버십앱에서 가상계좌나 카드결제로 직접 가능합니다."','"필요한 내용 있으면 고객센터나 저한테 연락주시면 됩니다."']},
+  {title:'가족·지인 상담 (후불)',lines:['"핸드폰 요금 한 달에 얼마 내?"','"나 지금 무제한으로 2만원 내면서 쿠폰도 받고 있거든."','"너도 가능한지 내가 한번 확인해줄까?"','(3개월 평균 데이터 사용량 확인)','"지금 OOO원 내고 있지? 나한테 오면 OOO원짜리로 똑같이 쓸 수 있어."','"한 달에 OO원 차이고, 1년이면 OO만원이야."','"그럼 바로 옮기면 되겠다. 번호 그대로고, 바로 해줄게."']},
+  {title:'선불 상담 스크립트',lines:['"안녕하세요! 선불폰 개통 문의 주셔서 감사합니다."','"혹시 간편인증이 가능하신가요? (카카오·토스·PASS 등)"','→ 가능: 링크 보내드릴게요. 요금제 선택 후 바로 진행 가능해요.','→ 불가: 가까운 센터 내방으로 개통 도와드릴게요. 신분증+유심 지참해주세요.','"제일 많이 쓰시는 건 LTE396 — 39,600원에 10.3GB예요."','"6,000원만 더 내시면 45,900원에 20.3GB 가능해요. (KT망)"','"개통 완료 후 충전계좌 문자로 보내드릴게요."']},
+];
+(function(){
+  var h='';
+  scripts.forEach((s,i)=>{
+    h+=`<div class="script-card"><div class="script-hdr" onclick="togScript(${i})"><span class="script-title">${s.title}</span><i class="ti ti-chevron-down script-chev" id="sc${i}"></i></div><div class="script-body" id="sb${i}">`;
+    s.lines.forEach(l=>h+=`<div class="script-line">${l}</div>`);
+    h+=`<button class="copy-btn" id="cb${i}" onclick="copyScript(${i})">복사하기</button></div></div>`;
+  });
+  document.getElementById('script-list').innerHTML=h;
+})();
+function togScript(i){
+  var b=document.getElementById('sb'+i),c=document.getElementById('sc'+i);
+  var on=b.classList.toggle('open');c.classList.toggle('open',on);
+}
+function copyScript(i){
+  var text=scripts[i].lines.join('\n'),btn=document.getElementById('cb'+i);
+  if(navigator.clipboard){navigator.clipboard.writeText(text).then(()=>{btn.textContent='복사됨 ✓';btn.classList.add('done');setTimeout(()=>{btn.textContent='복사하기';btn.classList.remove('done');},2000);});}
+  else{var ta=document.createElement('textarea');ta.value=text;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);btn.textContent='복사됨 ✓';btn.classList.add('done');setTimeout(()=>{btn.textContent='복사하기';btn.classList.remove('done');},2000);}
+}
+
+// 가이드북
+var chData={
+  1:{title:'앤텔레콤 사업 이해',html:`<div class="g-h">■ 앤텔레콤이란?</div><table class="g-tbl"><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>정식 명칭</td><td>앤알커뮤니케이션 / 서비스명: 앤텔레콤</td></tr><tr><td>사업 구조</td><td>KT·LG망 알뜰폰(MVNO) + 네트워크 마케팅 보상플랜 결합</td></tr><tr><td>가입 방식</td><td>116만원 투자 (66만원 사업권 + 50만원 충전금)</td></tr><tr><td>정산 방식</td><td>월 4회차 정산. 충전금의 81% = NV로 전환</td></tr></tbody></table><div class="g-h">■ 핵심 개념: NV</div><table class="g-tbl"><thead><tr><th>개념</th><th>설명</th></tr></thead><tbody><tr><td>NV 계산식</td><td>소비자 충전금액 × 81% = NV</td></tr><tr><td>예시</td><td>4만원 충전 → 32,400 NV 발생</td></tr><tr><td>소실적 NV</td><td>A라인·B라인 NV 중 작은 쪽</td></tr><tr><td>장려금 계산</td><td>소실적 NV × 직급 요율 = 회차 매출장려금</td></tr></tbody></table><div class="g-h">■ 충전 매출 설정 방식</div><table class="g-tbl"><thead><tr><th>모드</th><th>설명</th></tr></thead><tbody><tr><td>NV 100%형</td><td>충전액 × 81% 전액 NV. 소실적 극대화.</td></tr><tr><td>요금 20%형</td><td>충전액 20% → 내 선불번호 재충전. 나머지 × 81% = NV.</td></tr></tbody></table><div class="g-amb">20% 크레딧은 본코드에만 적립. 코드별 중복 적립 없음.</div>`},
+  2:{title:'보상플랜',html:`<div class="g-h">■ 정산 주기</div><table class="g-tbl"><thead><tr><th>차수</th><th>마감</th><th>지급일</th></tr></thead><tbody><tr><td>1차</td><td>1일~8일</td><td>당월 30일</td></tr><tr><td>2차</td><td>9일~15일</td><td>당월 30일</td></tr><tr><td>3차</td><td>16일~23일</td><td>익월 15일</td></tr><tr><td>4차</td><td>24일~말일</td><td>익월 15일</td></tr></tbody></table><div class="g-h">■ 직급 체계 및 유지 회선</div><table class="g-tbl"><thead><tr><th>직급</th><th>승급 조건</th><th>유지 회선</th></tr></thead><tbody><tr><td>GD</td><td>116만원 가입 시 즉시</td><td>2회선</td></tr><tr><td>RD</td><td>1~2회차 소실적 300만 NV</td><td>4회선</td></tr><tr><td>ED</td><td>A·B라인 각 RD 2명 이상</td><td>5회선</td></tr><tr><td>DD</td><td>좌우 각 2명의 ED</td><td>7회선</td></tr><tr><td>SDD</td><td>좌우 각 2명의 DD</td><td>8회선</td></tr><tr><td>CDD</td><td>좌우 각 2명의 SDD</td><td>9회선</td></tr></tbody></table><div class="g-h">■ 매출장려금 구간</div><table class="g-tbl"><thead><tr><th>직급</th><th>소실적 NV</th><th>요율</th><th>월 최대(×4)</th></tr></thead><tbody><tr><td>GD</td><td>40만~80만</td><td>8%</td><td>25.6만원</td></tr><tr><td>GD</td><td>80만~150만</td><td>10%</td><td>60만원</td></tr><tr><td>RD</td><td>150만~400만</td><td>10%</td><td>160만원</td></tr><tr><td>ED</td><td>500만~1,200만</td><td>9%</td><td>432만원</td></tr><tr><td>DD</td><td>2,000만~3,000만</td><td>7%</td><td>840만원</td></tr></tbody></table><div class="g-h">■ 직급장려금</div><table class="g-tbl"><thead><tr><th>직급</th><th>신규</th><th>유지</th><th>월 합계(×4)</th></tr></thead><tbody><tr><td>RD</td><td>20만원</td><td>23만원/회차</td><td>92만원</td></tr><tr><td>ED</td><td>40만원</td><td>60만원/회차</td><td>240만원</td></tr><tr><td>DD</td><td>80만원</td><td>100만원/회차</td><td>400만원</td></tr><tr><td>SDD</td><td>100만원</td><td>200만원/회차</td><td>800만원</td></tr><tr><td>CDD</td><td>150만원</td><td>300만원/회차</td><td>1,200만원</td></tr><tr><td>PM</td><td>400만원</td><td>400만원/회차</td><td>1,600만원</td></tr><tr><td>IM</td><td>500만원</td><td>500만원/회차</td><td>2,000만원</td></tr></tbody></table>`},
+  3:{title:'초기사업 셋팅',html:`<div class="g-h">■ 개통 방식 비교</div><table class="g-tbl"><thead><tr><th>방식</th><th>해피콜</th><th>특징</th></tr></thead><tbody><tr><td>앤스마트 직접</td><td>없음</td><td>태블릿 대면. 가장 빠름</td></tr><tr><td>멤버십</td><td>직접 진행</td><td>소비자 앱 접수 → 사업자 승인</td></tr><tr><td>플랫폼</td><td>필수 수신</td><td>미수신 3~4일 후 이용정지</td></tr><tr><td>센터내방</td><td>없음</td><td>간편인증 없을 시 필수</td></tr></tbody></table><div class="g-warn">⚠ 명의당 선불 1회선 / 후불 1회선 각각 온라인 개통 가능. 추가개통은 반드시 센터 방문.</div><div class="g-h">■ 개통 전 해피콜 스크립트</div><div class="g-scr"><div class="g-scr-l">"안녕하세요. 앤텔레콤입니다. OOO 고객님 맞으신가요?"</div><div class="g-scr-l">① 명의자 성함·생년월일 확인. ② 요금제 확인. ③ 유심 번호 확인.</div><div class="g-scr-l">"유심 양도·재판매 시 모든 법적 책임은 본인이 집니다."</div><div class="g-scr-l">"개통 동의서를 자필 작성 후 신분증·유심 사진으로 보내주세요."</div></div><div class="g-h">■ 개통 후 해피콜 스크립트</div><div class="g-scr"><div class="g-scr-l">"개통 완료 되었구요, 번호는 010-xxxx-xxxx입니다."</div><div class="g-scr-l">"부산은행 xxxx-xxx 여기로 기본료 0000원 보내주시면 충전 진행할게요."</div><div class="g-scr-l">"다음번 충전 시 멤버십앱에서 가상계좌나 카드결제로 직접 가능합니다."</div></div><div class="g-h">■ 초기 셋팅 순서</div><div class="g-tip">N스마트 설치(태블릿) → NRCBIZ 설치 → 플랫폼 관리사이트 연락처 변경 → 가비아 도메인·포워딩(유동) → 채널톡 연동 → 카카오채널 개설·연동 → 해피콜 스크립트 숙지</div>`},
+  4:{title:'후불 마케팅',html:`<div class="g-h">■ 후불 개통 조건</div><div class="g-tip">신용 문제 없고 연체·미납 이력 없어야 가입 가능. 114로 통신사명 확인. 번호이동 시 미납 없어야 함.</div><div class="g-h">■ K망 후불 요금제</div><table class="g-tbl"><thead><tr><th>데이터</th><th>소진후</th><th>월 요금</th><th>부가혜택</th></tr></thead><tbody><tr><td>7GB ★</td><td>1Mbps</td><td>19,500원~</td><td>밀리·CU·올리브영 등</td></tr><tr><td>10GB ★</td><td>1Mbps</td><td>22,300원~</td><td>밀리·CU 등</td></tr><tr><td>11GB+일2GB</td><td>3Mbps</td><td>37,500원~</td><td>밀리·CU 등</td></tr><tr><td>100GB</td><td>5Mbps</td><td>43,200원~</td><td>밀리·CU 등</td></tr></tbody></table><div class="g-amb">★ 추가 데이터 10GB — 2026년 12월 31일까지 개통 소비자 24개월 제공</div><div class="g-h">■ LG망 후불 요금제</div><table class="g-tbl"><thead><tr><th>요금제</th><th>데이터</th><th>통화</th><th>월 요금</th></tr></thead><tbody><tr><td>L망후불7GB+</td><td>7GB</td><td>무제한</td><td>17,900원</td></tr><tr><td>L망100분15GB+</td><td>15GB</td><td>100분</td><td>28,500원</td></tr><tr><td>L망300분15GB+</td><td>15GB</td><td>300분</td><td>30,600원</td></tr><tr><td>L망11GB+일2GB</td><td>11GB+일2GB</td><td>무제한</td><td>36,700원</td></tr><tr><td>L망매일5GB+</td><td>매일5GB</td><td>무제한</td><td>43,200원</td></tr></tbody></table><div class="g-h">■ 상담 거절 대응</div><table class="g-tbl"><thead><tr><th>반응</th><th>대응</th></tr></thead><tbody><tr><td>"나중에 할게"</td><td>이번 달 바꾸면 이번 달부터 줄어요.</td></tr><tr><td>"귀찮아"</td><td>내가 다 해줄게. 유심만 사오면 10분 끝.</td></tr><tr><td>"약정 중이야"</td><td>끝나는 날 알려줘. 그때 연락할게.</td></tr></tbody></table>`},
+  5:{title:'선불 마케팅',html:`<div class="g-h">■ 선불 요금제</div><table class="g-tbl"><thead><tr><th>요금제</th><th>월 요금</th><th>망</th><th>데이터</th><th>소진후</th></tr></thead><tbody><tr><td>LTE기본1</td><td>12,100원</td><td>KT/LG</td><td>300MB</td><td>없음</td></tr><tr><td>L망2.5GB</td><td>17,000원</td><td>LG</td><td>2.5GB</td><td>없음</td></tr><tr><td>LTE396 ★</td><td>39,600원</td><td>KT/LG</td><td>10.3GB</td><td>3Mbps</td></tr><tr><td>LTE459</td><td>45,900원</td><td>KT</td><td>20.3GB</td><td>3Mbps</td></tr><tr><td>5G선불464 🆕</td><td>46,400원</td><td>LG</td><td>20GB</td><td>3Mbps</td></tr><tr><td>LTE770</td><td>77,000원</td><td>KT/LG</td><td>최대71GB</td><td>3Mbps</td></tr></tbody></table><div class="g-h">■ 미납폰 유심 선택 규칙</div><table class="g-tbl"><thead><tr><th>상황</th><th>유심 선택</th></tr></thead><tbody><tr><td>KT 발신정지</td><td style="color:#991b1b;font-weight:700;">반드시 LG망 선불유심</td></tr><tr><td>LG 미납폰 기기</td><td style="color:#991b1b;font-weight:700;">반드시 KT망 선불유심</td></tr><tr><td>SK 미납폰 기기</td><td>KT망 또는 LG망 둘 다 가능</td></tr></tbody></table><div class="g-h">■ 개통 실패 대응</div><table class="g-tbl"><thead><tr><th>실패 유형</th><th>대처</th></tr></thead><tbody><tr><td>사전체크 실패</td><td>이름 공백·주민번호·신분증 발급일 확인</td></tr><tr><td>가입 제한</td><td>PASS/카카오뱅크 → 명의도용방지 서비스 해제</td></tr><tr><td>유심 오류</td><td>바로유심/원칩유심 확인·재구매</td></tr><tr><td>블랙리스트</td><td>경찰서 사건사고확인서 → 가입제한 해제 신청</td></tr></tbody></table>`},
+  6:{title:'온라인 마케팅',html:`<div class="g-h">■ 블로그 마케팅</div><table class="g-tbl"><thead><tr><th>항목</th><th>내용</th></tr></thead><tbody><tr><td>플랫폼</td><td>네이버 블로그 (주요 검색 유입)</td></tr><tr><td>핵심 전략</td><td>경험 기반 후기글 + 요금제 비교 + 개통 방법 안내</td></tr><tr><td>블로그 지수</td><td>www.whereispost.com</td></tr></tbody></table><div class="g-h">■ 카카오채널 운영</div><table class="g-tbl"><thead><tr><th>단계</th><th>내용</th></tr></thead><tbody><tr><td>① 채널 개설</td><td>카카오톡 채널 관리자 → 채널 개설</td></tr><tr><td>② 공개 설정</td><td>채널 공개 ON + 검색 허용 ON</td></tr><tr><td>③ 채팅 ON</td><td>하단 탭 "채팅" → 채팅 사용 ON</td></tr><tr><td>④ 플랫폼 연동</td><td>플랫폼 관리사이트 → 카카오채널 URL 입력</td></tr></tbody></table><div class="g-h">■ 채널톡 설정</div><table class="g-tbl"><thead><tr><th>단계</th><th>내용</th></tr></thead><tbody><tr><td>1</td><td>channel.io 가입</td></tr><tr><td>2</td><td>새 채널 만들기 (서비스명 + 플랫폼 URL)</td></tr><tr><td>3</td><td>설정 → Web설치하기 → 코드 복사</td></tr><tr><td>4</td><td>플랫폼 관리사이트 → 채널톡 항목 → 붙여넣기</td></tr><tr><td>5</td><td>채널톡 앱 설치 → 상담 알림 수신</td></tr></tbody></table>`},
+  7:{title:'개통 진행 순서',html:`<div class="g-h">■ K망 플랫폼 셀프개통 순서</div><table class="g-tbl"><thead><tr><th>순서</th><th>설명</th></tr></thead><tbody><tr><td>STEP 1</td><td>본인 플랫폼 URL 접속</td></tr><tr><td>STEP 2</td><td>메인 "개통하기" 클릭</td></tr><tr><td>STEP 3</td><td>간편인증 앱으로 본인 확인</td></tr><tr><td>STEP 4</td><td>희망번호 뒷자리 입력 후 조회 → 선택</td></tr><tr><td>STEP 5</td><td>유심 고유번호 입력</td></tr><tr><td>STEP 6</td><td>요금제 선택</td></tr><tr><td>STEP 7</td><td>명의자 정보·주소 입력</td></tr><tr><td>STEP 8</td><td>개통 신청 완료 화면 확인</td></tr><tr><td>STEP 9</td><td>1899-7700 해피콜 반드시 수신</td></tr></tbody></table><div class="g-h">■ LG망 eSIM 개통 순서</div><table class="g-tbl"><thead><tr><th>순서</th><th>설명</th></tr></thead><tbody><tr><td>1</td><td>LG 개통하기 선택</td></tr><tr><td>2</td><td>안면인증 QR 스캔 또는 문자 URL</td></tr><tr><td>3</td><td>이름·생년월일·전화번호 입력</td></tr><tr><td>4</td><td>신규 또는 번호이동 선택</td></tr><tr><td>5</td><td>iOS 또는 Android 선택</td></tr><tr><td>6</td><td>바코드 업로드 또는 EID·IMEI 입력</td></tr><tr><td>7</td><td>LG 선불 요금제 선택</td></tr><tr><td>8</td><td>실명인증 정보 입력</td></tr><tr><td>9</td><td>희망번호 선택</td></tr><tr><td>10</td><td>카드 결제</td></tr><tr><td>11</td><td>충전계좌 확인 후 요금 입금</td></tr><tr><td>12</td><td>반드시 WIFI 연결 후 eSIM 활성화</td></tr></tbody></table><div class="g-warn">⚠ eSIM 활성화 시 데이터 필요 — 반드시 WIFI 연결 후 진행!</div>`},
+  8:{title:'부록',html:`<div class="g-h">■ 필수 링크 모음</div><table class="g-tbl"><thead><tr><th>서비스</th><th>URL</th></tr></thead><tbody><tr><td>앤알커뮤니케이션</td><td>www.nrcom.com</td></tr><tr><td>앤텔레콤</td><td>info.n-telecom.co.kr</td></tr><tr><td>아이몰7</td><td>www.imall7.com</td></tr><tr><td>본인 플랫폼</td><td>www.n-telecom.co.kr/아이디</td></tr><tr><td>플랫폼 관리사이트</td><td>npfa.n-telecom.co.kr</td></tr><tr><td>가비아(도메인)</td><td>www.gabia.com</td></tr></tbody></table><div class="g-h">■ 고객센터</div><table class="g-tbl"><thead><tr><th>연락처</th><th>운영시간</th></tr></thead><tbody><tr><td>1899-7700 (유료)</td><td>평일 9:30~18:00</td></tr><tr><td>114 (개통 폰 무료)</td><td>평일 9:30~18:00</td></tr><tr><td>1688-0016 영업소</td><td>평일 9:30~18:00</td></tr></tbody></table><div class="g-h">■ 자주 받는 질문</div><table class="g-tbl"><thead><tr><th>질문</th><th>답변</th></tr></thead><tbody><tr><td>116만원을 내면 뭘 받나요?</td><td>66만원 사업권(태블릿·앤스마트) + 50만원 소비자 충전금.</td></tr><tr><td>외국인도 개통 가능한가요?</td><td>여권으로 센터 방문 개통 가능. KT망 7개국어 지원.</td></tr><tr><td>해피콜을 못 받으면?</td><td>3~4일 후 이용정지. 114로 직접 전화 가능.</td></tr><tr><td>RD 직급 달성 방법?</td><td>1·2회차 합산 소실적 300만 NV 달성 시 자동 승급.</td></tr></tbody></table>`}
+};
+function openCh(n){
+  document.getElementById('guide-home').style.display='none';
+  var d=chData[n];
+  document.getElementById('guide-hdr').innerHTML=`<h1>${d.title}</h1><p>${n}장</p>`;
+  document.getElementById('guide-detail-wrap').innerHTML=`<div class="guide-detail on"><div class="guide-back" onclick="closeCh()">‹목차로 돌아가기</div><div class="guide-sec">${d.html}</div></div>`;
+  document.querySelector('.app-body').scrollTop=0;
+}
+function closeCh(){
+  document.getElementById('guide-home').style.display='block';
+  document.getElementById('guide-hdr').innerHTML='<h1>실전 가이드북</h1><p>YES그룹 앤텔레콤 사업 1~8장</p>';
+  document.getElementById('guide-detail-wrap').innerHTML='';
+  document.querySelector('.app-body').scrollTop=0;
+}
+
+initPlatform();
+</script>
+</body>
+</html>
